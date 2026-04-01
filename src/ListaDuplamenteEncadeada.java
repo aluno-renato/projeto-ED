@@ -5,13 +5,26 @@ class NoDuplo<T> {
     public NoDuplo(T dado) {
         this.dado = dado;
     }
+
+    public T getDado() {
+        return dado;
+    }
+
+    public NoDuplo<T> getAnterior() {
+        return anterior;
+    }
+
+    public NoDuplo<T> getProximo() {
+        return proximo;
+    }
 }
 
-class ListaDupla<T> {
+class ListaDuplamenteEncadeada<T> {
     private NoDuplo<T> inicio;
 
     public void inserir(T dado) {
         NoDuplo<T> novo = new NoDuplo<>(dado);
+
         if (inicio == null) {
             inicio = novo;
         } else {

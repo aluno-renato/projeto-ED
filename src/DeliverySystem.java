@@ -1,33 +1,53 @@
 class DeliverySystem {
 
-    ListaSimples<Cliente> clientes = new ListaSimples<>();
-    ListaSimples<Produto> produtos = new ListaSimples<>();
+    ListaSimplesmenteEncadeada<Cliente> clientes = new ListaSimplesmenteEncadeada<>();
+    ListaSimplesmenteEncadeada<Produto> produtos = new ListaSimplesmenteEncadeada<>();
 
-    ListaDupla<Pedido> pedidosAtivos = new ListaDupla<>();
-    Fila<Pedido> filaPreparo = new Fila<>();
-    Pilha<Pedido> historico = new Pilha<>();
-
-    public Cliente buscarPrimeiroCliente() {
-    No<Cliente> atual = clientes.getInicio();
-    if (atual != null) return atual.dado;
-    return null;
-}
+    ListaDuplamenteEncadeada<Pedido> pedidosAtivos = new ListaDuplamenteEncadeada<>();
+    FilaEncadeada<Pedido> fila = new FilaEncadeada<>();
+    PilhaEncadeada<Pedido> historico = new PilhaEncadeada<>();
 
     public void cadastrarCliente(Cliente c) {
         clientes.inserir(c);
+    }
+
+    public void listarClientes() {
+        clientes.listar();
     }
 
     public void cadastrarProduto(Produto p) {
         produtos.inserir(p);
     }
 
+    public void listarProdutos() {
+        produtos.listar();
+    }
+
+    public Cliente buscarCliente(int id) {
+        No<Cliente> atual = clientes.getInicio();
+        while (atual != null) {
+            if (atual.dado.id == id) return atual.dado;
+            atual = atual.proximo;
+        }
+        return null;
+    }
+
+    public Produto buscarProduto(int id) {
+        No<Produto> atual = produtos.getInicio();
+        while (atual != null) {
+            if (atual.dado.id == id) return atual.dado;
+            atual = atual.proximo;
+        }
+        return null;
+    }
+
     public void criarPedido(Pedido p) {
         pedidosAtivos.inserir(p);
-        filaPreparo.enfileirar(p);
+        fila.enfileirar(p);
     }
 
     public Pedido prepararProximoPedido() {
-        return filaPreparo.desenfileirar();
+        return fila.desenfileirar();
     }
 
     public void finalizarPedido(Pedido p) {
@@ -35,7 +55,11 @@ class DeliverySystem {
         historico.push(p);
     }
 
-    public void exibirHistorico() {
+    public void mostrarFila() {
+        fila.listar();
+    }
+
+    public void mostrarHistorico() {
         historico.listar();
     }
 }

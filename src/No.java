@@ -4,6 +4,5 @@ class No<T> {
 
     public No(T dado) {
         this.dado = dado;
-        this.proximo = null;
     }
 }

@@ -1,106 +1,102 @@
 import java.util.Scanner;
 
 public class Main {
+
+    static int id = 1;
+
     public static void main(String[] args) {
 
         DeliverySystem sistema = new DeliverySystem();
-        Scanner sc = new Scanner(System.in);
 
-        int op;
+        try (Scanner sc = new Scanner(System.in)) {
+            int op;
 
-        do {
-            System.out.println("\n1 - Cadastrar Cliente");
-            System.out.println("2 - Listar Clientes");
-            System.out.println("3 - Cadastrar Produto");
-            System.out.println("4 - Criar Pedido");
-            System.out.println("5 - Preparar Próximo Pedido");
-            System.out.println("6 - Finalizar Pedido");
-            System.out.println("7 - Histórico");
-            System.out.println("0 - Sair");
+            do {
+                System.out.println("\n1 - Cadastrar Cliente");
+                System.out.println("2 - Listar Clientes");
+                System.out.println("3 - Cadastrar Produto");
+                System.out.println("4 - Listar Produtos");
+                System.out.println("5 - Criar Pedido");
+                System.out.println("6 - Adicionar Item ao Pedido");
+                System.out.println("7 - Ver Fila");
+                System.out.println("8 - Preparar Pedido");
+                System.out.println("9 - Finalizar Pedido");
+                System.out.println("10 - Histórico");
+                System.out.println("0 - Sair");
 
-            System.out.print("Opção: ");
-            op = Integer.parseInt(sc.nextLine());
+                op = Integer.parseInt(sc.nextLine());
 
-            switch (op) {
+                switch (op) {
+                    case 1 -> {
+                        System.out.print("Nome: ");
+                        String nome = sc.nextLine();
 
-                case 1:
-                    System.out.print("Nome: ");
-                    String nome = sc.nextLine();
+                        System.out.print("Telefone: ");
+                        String tel = sc.nextLine();
 
-                    System.out.print("Telefone: ");
-                    String telefone = sc.nextLine();
+                        System.out.print("Endereço: ");
+                        String end = sc.nextLine();
 
-                    System.out.print("Endereço: ");
-                    String endereco = sc.nextLine();
-
-                    sistema.cadastrarCliente(
-                        new Cliente(gerarId(), nome, telefone, endereco)
-                    );
-                    break;
-
-                case 2:
-                    sistema.clientes.listar();
-                    break;
-
-                case 3:
-                    System.out.print("Nome do produto: ");
-                    String nomeProd = sc.nextLine();
-
-                    System.out.print("Preço: ");
-                    double preco = Double.parseDouble(sc.nextLine());
-
-                    System.out.print("Categoria: ");
-                    String categoria = sc.nextLine();
-
-                    System.out.print("Estoque: ");
-                    int estoque = Integer.parseInt(sc.nextLine());
-
-                    sistema.cadastrarProduto(
-                        new Produto(gerarId(), nomeProd, preco, categoria, estoque)
-                    );
-                    break;
-
-                case 4:
-                    System.out.println("Criando pedido...");
-                    Cliente cliente = sistema.buscarPrimeiroCliente();
-
-                    Pedido pedido = new Pedido(gerarId(), cliente);
-                    sistema.criarPedido(pedido);
-
-                    System.out.println("Pedido criado!");
-                    break;
-
-                case 5:
-                    Pedido p = sistema.prepararProximoPedido();
-                    if (p != null) {
-                        System.out.println("Preparando:");
-                        p.exibirResumo();
-                    } else {
-                        System.out.println("Fila vazia.");
+                        sistema.cadastrarCliente(new Cliente(id++, nome, tel, end));
                     }
-                    break;
+                    case 3 -> {
+                        System.out.print("Nome produto: ");
+                        String np = sc.nextLine();
 
-                case 6:
-                    Pedido finalizado = sistema.prepararProximoPedido();
-                    if (finalizado != null) {
-                        sistema.finalizarPedido(finalizado);
-                        System.out.println("Pedido finalizado!");
+                        System.out.print("Preço: ");
+                        double pr = Double.parseDouble(sc.nextLine());
+
+                        System.out.print("Categoria: ");
+                        String cat = sc.nextLine();
+
+                        System.out.print("Estoque: ");
+                        int est = Integer.parseInt(sc.nextLine());
+
+                        sistema.cadastrarProduto(new Produto(id++, np, pr, cat, est));
                     }
-                    break;
+                    case 5 -> {
+                        sistema.listarClientes();
+                        System.out.print("ID Cliente: ");
+                        int idc = Integer.parseInt(sc.nextLine());
 
-                case 7:
-                    sistema.exibirHistorico();
-                    break;
-            }
+                        Cliente c = sistema.buscarCliente(idc);
+                        if (c != null) {
+                            sistema.criarPedido(new Pedido(id++, c));
+                            System.out.println("Pedido criado!");
+                        }
+                    }
+                    case 6 -> {
+                        sistema.listarProdutos();
+                        System.out.print("ID Produto: ");
+                        int idp = Integer.parseInt(sc.nextLine());
 
-        } while (op != 0);
+                        Produto prod = sistema.buscarProduto(idp);
 
-        sc.close();
-    }
+                        System.out.print("Quantidade: ");
+                        int qtd = Integer.parseInt(sc.nextLine());
 
-    static int contador = 1;
+                        Pedido pedido = sistema.prepararProximoPedido();
+                        if (pedido != null) {
+                            pedido.adicionarItem(new ItemPedido(prod, qtd));
+                            sistema.criarPedido(pedido);
+                        }
+                    }
+                    case 7 -> sistema.mostrarFila();
+                    case 8 -> {
+                        Pedido p = sistema.prepararProximoPedido();
+                        if (p != null) p.exibirResumo();
+                    }
+                    case 9 -> {
+                        Pedido f = sistema.prepararProximoPedido();
+                        if (f != null) {
+                            sistema.finalizarPedido(f);
+                            System.out.println("Finalizado!");
+                        }
+                    }
+                    case 10 -> sistema.mostrarHistorico();
+                }
 
-    public static int gerarId() {
-        return contador++;
+            } while (op != 0);
+        }
     }
 }

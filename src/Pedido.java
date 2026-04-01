@@ -1,14 +1,13 @@
 class Pedido {
-    int idPedido;
+    int id;
     Cliente cliente;
     String status;
-    double valorTotal;
-    String enderecoEntrega;
+    double total;
 
-    ListaSimples<ItemPedido> itens = new ListaSimples<>();
+    ListaSimplesmenteEncadeada<ItemPedido> itens = new ListaSimplesmenteEncadeada<>();
 
     public Pedido(int id, Cliente cliente) {
-        this.idPedido = id;
+        this.id = id;
         this.cliente = cliente;
         this.status = "CRIADO";
     }
@@ -19,16 +18,25 @@ class Pedido {
     }
 
     public void calcularTotal() {
-        double total = 0;
+        double soma = 0;
         No<ItemPedido> atual = itens.getInicio();
+
         while (atual != null) {
-            total += atual.dado.subtotal;
+            soma += atual.dado.subtotal;
             atual = atual.proximo;
         }
-        valorTotal = total;
+
+        total = soma;
     }
 
     public void exibirResumo() {
-        System.out.println("Pedido #" + idPedido + " Total: " + valorTotal);
+        System.out.println("\nPedido #" + id + " | Cliente: " + cliente.nome);
+        itens.listar();
+        System.out.println("Total: R$" + total + " | Status: " + status);
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido #" + id + " - " + cliente.nome + " - R$" + total;
     }
 }

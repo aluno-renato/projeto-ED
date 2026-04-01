@@ -9,7 +9,12 @@ class ItemPedido {
         calcularSubtotal();
     }
 
-    public void calcularSubtotal() {
+    public final void calcularSubtotal() {
         subtotal = produto.preco * quantidade;
+    }
+
+    @Override
+    public String toString() {
+        return produto.nome + " x" + quantidade + " = R$" + subtotal;
     }
 }

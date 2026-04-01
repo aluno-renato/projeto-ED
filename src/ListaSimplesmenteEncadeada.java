@@ -1,4 +1,4 @@
-class ListaSimples<T> {
+class ListaSimplesmenteEncadeada<T> {
     private No<T> inicio;
 
     public void inserir(T dado) {
