@@ -12,8 +12,12 @@ class DeliverySystem {
     }
 
     public void listarClientes() {
+    if (clientes.getInicio() == null) {
+        System.out.println("Nenhum cliente cadastrado.");
+    } else {
         clientes.listar();
     }
+}
 
     public void cadastrarProduto(Produto p) {
         produtos.inserir(p);

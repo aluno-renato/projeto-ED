@@ -39,6 +39,11 @@ public class Main {
 
                         sistema.cadastrarCliente(new Cliente(id++, nome, tel, end));
                     }
+                    case 2 -> {
+                        System.out.println("\n========== LISTA DE CLIENTES =========");
+                        sistema.listarClientes();
+                    break;
+                    }
                     case 3 -> {
                         System.out.print("Nome produto: ");
                         String np = sc.nextLine();
