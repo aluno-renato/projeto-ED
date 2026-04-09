@@ -61,27 +61,31 @@ class DeliverySystem {
     }
 
     public void criarPedido(Pedido p) {
-
         NoDuplo<Pedido> atual = pedidosAtivos.getInicio();
+
         while (atual != null) {
             if (atual.dado.id == p.id) {
-                System.out.println("⚠ Pedido já existe!");
+                System.out.println("Pedido já existe!");
                 return;
             }
             atual = atual.proximo;
         }
-
         pedidosAtivos.inserir(p);
         fila.enfileirar(p);
     }
 
-    public Pedido prepararProximoPedido() { 
+    public Pedido prepararProximoPedido() {
+
         Pedido p = fila.desenfileirar();
 
         if (p != null) {
             p.status = "PREPARADO";
             pedidosPreparados.inserir(p);
+            System.out.println("Pedido preparado: " + p.id);
+        } else {
+            System.out.println("Fila vazia, nada para preparar.");
         }
+
         return p;
     }
 

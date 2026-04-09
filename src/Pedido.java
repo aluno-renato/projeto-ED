@@ -18,10 +18,10 @@ class Pedido {
             itens.inserir(item);
             calcularTotal();
 
-            System.out.println("✅ Item adicionado e estoque atualizado!");
+            System.out.println("Item adicionado e estoque atualizado!");
 
         } else {
-            System.out.println("❌ Estoque insuficiente para: " + item.produto.nome);
+            System.out.println("Estoque insuficiente para: " + item.produto.nome);
         }
     }
 

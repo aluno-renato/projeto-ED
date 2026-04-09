@@ -21,12 +21,15 @@ public class Main {
                 System.out.println("6 - Adicionar Item ao Pedido");
                 System.out.println("7 - Ver Fila De CLientes");
                 System.out.println("8 - Ver Fila De Produtos");
-                System.out.println("9 - Editar Pedido");
-                System.out.println("10 - Finalizar Pedido");
-                System.out.println("11 - Histórico");
+                System.out.println("9 - Preparar Próximo Pedido");
+                System.out.println("10 - Editar Pedido");
+                System.out.println("11 - Finalizar Pedido");
+                System.out.println("12 - Histórico");
                 System.out.println("0 - Sair");
 
+                System.out.println("\nEscolha uma opção: ");
                 op = Integer.parseInt(sc.nextLine());
+                
 
                 switch (op) {
                     case 1: {
@@ -137,6 +140,16 @@ public class Main {
                     }
 
                     case 9: {
+                        Pedido p = sistema.prepararProximoPedido();
+
+                        if (p != null) {
+                            System.out.println("\nPedido preparado com sucesso!");
+                            p.exibirResumo();
+                        }
+                        break;
+                    }
+
+                    case 10: {
                         sistema.listarPedidosAtivos();
 
                         System.out.print("ID do Pedido: ");
@@ -201,7 +214,7 @@ public class Main {
                         } while (opEdit != 0);
                         break;
                     }
-                    case 10: {
+                    case 11: {
                         sistema.listarPedidosPreparados();
 
                         System.out.print("ID do pedido para finalizar: ");
@@ -211,7 +224,7 @@ public class Main {
 
                     break;
                     }
-                    case 11:
+                    case 12:
                         sistema.mostrarHistorico();
                         break;
                 }
