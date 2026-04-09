@@ -13,5 +13,9 @@ class PilhaEncadeada<T> {
             System.out.println(atual.dado);
             atual = atual.proximo;
         }
+    }  
+
+    public boolean estaVazia() {
+        return topo == null;
     }
 }

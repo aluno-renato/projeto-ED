@@ -35,6 +35,29 @@ class Pedido {
         System.out.println("Total: R$" + total + " | Status: " + status);
     }
 
+    public void removerItem(int idProduto) {
+        No<ItemPedido> atual = itens.getInicio();
+        No<ItemPedido> anterior = null;
+
+        while (atual != null) {
+            if (atual.dado.produto.id == idProduto) {
+                if (anterior == null) {
+                    itens.setInicio(atual.proximo);
+                } else {
+                    anterior.proximo = atual.proximo;
+                }
+                calcularTotal();
+                System.out.println("Item removido!");
+                return;
+            }
+
+            anterior = atual;
+            atual = atual.proximo;
+        }
+
+        System.out.println("Produto não encontrado no pedido.");
+    }
+
     @Override
     public String toString() {
         return "Pedido #" + id + " - " + cliente.nome + " - R$" + total;

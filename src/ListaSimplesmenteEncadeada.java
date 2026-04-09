@@ -23,6 +23,10 @@ class ListaSimplesmenteEncadeada<T> {
     }
 
     public No<T> getInicio() {
-        return inicio;
+    return inicio;
+    }
+
+    public void setInicio(No<T> novoInicio) {
+        this.inicio = novoInicio;
     }
 }
