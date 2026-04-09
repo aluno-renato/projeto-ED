@@ -40,7 +40,7 @@ public class Main {
                         sistema.cadastrarCliente(new Cliente(id++, nome, tel, end));
                     }
                     case 2 -> {
-                        System.out.println("\n========== LISTA DE CLIENTES =========");
+                        System.out.println("\n========== LISTA DE CLIENTES ==========");
                         sistema.listarClientes();
                     break;
                     }
@@ -58,6 +58,11 @@ public class Main {
                         int est = Integer.parseInt(sc.nextLine());
 
                         sistema.cadastrarProduto(new Produto(id++, np, pr, cat, est));
+                    }
+                    case 4 -> {
+                        System.out.println("\n========== LISTA DE PRODUTOS ==========");
+                        sistema.listarProdutos();
+                        break;
                     }
                     case 5 -> {
                         sistema.listarClientes();
