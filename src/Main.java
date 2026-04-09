@@ -7,7 +7,6 @@ public class Main {
     static int idPedido = 1;
 
     public static void main(String[] args) {
-
         DeliverySystem sistema = new DeliverySystem();
 
         try (Scanner sc = new Scanner(System.in)) {
