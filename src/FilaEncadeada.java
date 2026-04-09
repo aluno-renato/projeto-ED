@@ -1,4 +1,4 @@
-class FilaEncadeada<T> {
+public class FilaEncadeada<T> {
     private No<T> inicio, fim;
 
     public void enfileirar(T dado) {
@@ -23,15 +23,14 @@ class FilaEncadeada<T> {
         return dado;
     }
 
-    public boolean estaVazia() {
-        return inicio == null;
-    }
-
     public void listar() {
         No<T> atual = inicio;
         while (atual != null) {
             System.out.println(atual.dado);
             atual = atual.proximo;
         }
+    }
+    public boolean estaVazia() {
+        return inicio == null;
     }
 }

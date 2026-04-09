@@ -1,4 +1,4 @@
-class Cliente {
+public class Cliente {
     int id;
     String nome, telefone, endereco;
 
@@ -13,6 +13,14 @@ class Cliente {
         this.nome = nome;
         this.telefone = telefone;
         this.endereco = endereco;
+    }
+
+    public void cadastrar() {
+        System.out.println("Cliente cadastrado: " + nome);
+    }
+
+    public void exibirDados() {
+        System.out.println(this);
     }
 
     @Override
