@@ -72,20 +72,32 @@ public class Main {
                     }
                     case 6 -> {
                         sistema.listarProdutos();
+                        
                         System.out.print("ID Produto: ");
                         int idp = Integer.parseInt(sc.nextLine());
-
+                        
                         Produto prod = sistema.buscarProduto(idp);
-
+                        
+                        if (prod == null) {
+                            System.out.println("Produto não encontrado!");
+                            break;
+                        }
                         System.out.print("Quantidade: ");
                         int qtd = Integer.parseInt(sc.nextLine());
-
+                        
                         Pedido pedido = sistema.prepararProximoPedido();
-                        if (pedido != null) {
-                            pedido.adicionarItem(new ItemPedido(prod, qtd));
-                            sistema.criarPedido(pedido);
+                        
+                        if (pedido == null) {
+                            System.out.println("Nenhum pedido disponível!");
+                            break;
                         }
+                        pedido.adicionarItem(new ItemPedido(prod, qtd));
+                        sistema.criarPedido(pedido);
+                        
+                        System.out.println("Item adicionado ao pedido!");
+                        break;
                     }
+                    
                     case 7 -> sistema.mostrarFila();
                     case 8 -> {
                         Pedido p = sistema.prepararProximoPedido();
