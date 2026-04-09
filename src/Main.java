@@ -87,30 +87,40 @@ public class Main {
                         break;
                     }
                     case 6: {
+
+                        sistema.listarPedidosAtivos();
+
+                        System.out.print("ID do Pedido: ");
+                        int idPed = Integer.parseInt(sc.nextLine());
+
+                        Pedido ped = sistema.buscarPedidoPorId(idPed);
+
+                        if (ped == null) {
+                            System.out.println("Pedido não encontrado.");
+                            break;
+                        }
+
                         sistema.listarProdutos();
-                        
+
                         System.out.print("ID Produto: ");
                         int idp = Integer.parseInt(sc.nextLine());
-                        
+
                         Produto prod = sistema.buscarProduto(idp);
-                        
+
                         if (prod == null) {
-                            System.out.println("Produto não encontrado!");
+                            System.out.println("Produto não encontrado.");
                             break;
                         }
+
                         System.out.print("Quantidade: ");
                         int qtd = Integer.parseInt(sc.nextLine());
-                        
-                        Pedido pedido = sistema.prepararProximoPedido();
-                        
-                        if (pedido == null) {
-                            System.out.println("Nenhum pedido disponível!");
-                            break;
+
+                        if (prod.estoque >= qtd) {
+                            ped.adicionarItem(new ItemPedido(prod, qtd));
+                        } else {
+                            System.out.println("Estoque insuficiente!");
                         }
-                        pedido.adicionarItem(new ItemPedido(prod, qtd));
-                        System.out.println("Item adicionado!");
-                        
-                        System.out.println("Item adicionado ao pedido!");
+
                         break;
                     }
                     

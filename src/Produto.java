@@ -16,6 +16,15 @@ public class Produto {
         estoque -= qtd;
     }
 
+    public boolean baixarEstoque(int qtd) {
+        if (qtd <= estoque) {
+            estoque -= qtd;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public String toString() {
         return "ID: " + id + " | " + nome + " | R$" + preco + " | Estoque: " + estoque;

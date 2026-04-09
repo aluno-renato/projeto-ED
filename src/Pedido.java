@@ -13,8 +13,16 @@ class Pedido {
     }
 
     public void adicionarItem(ItemPedido item) {
-        itens.inserir(item);
-        calcularTotal();
+        if (item.produto.baixarEstoque(item.quantidade)) {
+
+            itens.inserir(item);
+            calcularTotal();
+
+            System.out.println("✅ Item adicionado e estoque atualizado!");
+
+        } else {
+            System.out.println("❌ Estoque insuficiente para: " + item.produto.nome);
+        }
     }
 
     public void calcularTotal() {
