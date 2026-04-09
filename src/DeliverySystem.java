@@ -1,4 +1,4 @@
-class DeliverySystem {
+public class DeliverySystem {
 
     ListaSimplesmenteEncadeada<Cliente> clientes = new ListaSimplesmenteEncadeada<>();
     ListaSimplesmenteEncadeada<Produto> produtos = new ListaSimplesmenteEncadeada<>();
@@ -7,17 +7,15 @@ class DeliverySystem {
     FilaEncadeada<Pedido> fila = new FilaEncadeada<>();
     PilhaEncadeada<Pedido> historico = new PilhaEncadeada<>();
 
+    Pedido pedidoEmPreparo = null;
+
     public void cadastrarCliente(Cliente c) {
         clientes.inserir(c);
     }
 
     public void listarClientes() {
-    if (clientes.getInicio() == null) {
-        System.out.println("Nenhum cliente cadastrado.");
-    } else {
         clientes.listar();
     }
-}
 
     public void cadastrarProduto(Produto p) {
         produtos.inserir(p);
@@ -25,6 +23,74 @@ class DeliverySystem {
 
     public void listarProdutos() {
         produtos.listar();
+    }
+
+    public void criarPedido(Pedido p) {
+        pedidosAtivos.inserir(p); // ✅ não entra na fila aqui
+    }
+
+    public void enfileirarPedido(Pedido p) {
+        fila.enfileirar(p);
+    }
+
+    public Pedido prepararProximoPedido() {
+        pedidoEmPreparo = fila.desenfileirar();
+        return pedidoEmPreparo;
+    }
+
+    public void finalizarPedido() {
+    if (pedidoEmPreparo != null) {
+        pedidoEmPreparo.finalizarPedido();
+
+        historico.push(pedidoEmPreparo);
+
+        removerPedidoAtivo(pedidoEmPreparo.id);
+
+        pedidoEmPreparo = null;
+
+    } else {
+        System.out.println("Nenhum pedido em preparo!");
+    }
+}
+
+    public void removerPedidoAtivo(int id) {
+    NoDuplo<Pedido> atual = pedidosAtivos.getInicio();
+
+    while (atual != null) {
+        if (atual.getDado().id == id) {
+
+            if (atual.getAnterior() != null) {
+                atual.getAnterior().proximo = atual.getProximo();
+            } else {
+                pedidosAtivos = new ListaDuplamenteEncadeada<>();
+                if (atual.getProximo() != null)
+                    pedidosAtivos.inserir(atual.getProximo().getDado());
+            }
+
+            if (atual.getProximo() != null) {
+                atual.getProximo().anterior = atual.getAnterior();
+            }
+
+            return;
+        }
+        atual = atual.getProximo();
+    }
+}
+
+    public void mostrarFila() {
+        fila.listar();
+    }
+
+    public void exibirHistorico() {
+        historico.listar();
+    }
+
+    public void navegarPedidosAtivos() {
+        NoDuplo<Pedido> atual = pedidosAtivos.getInicio();
+        while (atual != null) {
+            atual.getDado().exibirResumo();
+            atual = atual.getProximo();
+        }
     }
 
     public Cliente buscarCliente(int id) {
@@ -45,25 +111,12 @@ class DeliverySystem {
         return null;
     }
 
-    public void criarPedido(Pedido p) {
-        pedidosAtivos.inserir(p);
-        fila.enfileirar(p);
-    }
-
-    public Pedido prepararProximoPedido() {
-        return fila.desenfileirar();
-    }
-
-    public void finalizarPedido(Pedido p) {
-        p.status = "FINALIZADO";
-        historico.push(p);
-    }
-
-    public void mostrarFila() {
-        fila.listar();
-    }
-
-    public void mostrarHistorico() {
-        historico.listar();
+    public Pedido buscarPedidoAtivo(int id) {
+        NoDuplo<Pedido> atual = pedidosAtivos.getInicio();
+        while (atual != null) {
+            if (atual.getDado().id == id) return atual.getDado();
+            atual = atual.getProximo();
+        }
+        return null;
     }
 }

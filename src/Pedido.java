@@ -1,21 +1,30 @@
-class Pedido {
+public class Pedido {
     int id;
     Cliente cliente;
     String status;
     double total;
+    String enderecoEntrega;
 
     ListaSimplesmenteEncadeada<ItemPedido> itens = new ListaSimplesmenteEncadeada<>();
 
     public Pedido(int id, Cliente cliente) {
         this.id = id;
         this.cliente = cliente;
+        this.enderecoEntrega = cliente.endereco;
         this.status = "CRIADO";
     }
 
     public void adicionarItem(ItemPedido item) {
-        itens.inserir(item);
-        calcularTotal();
+
+    if (item.produto.estoque < item.quantidade) {
+        System.out.println("Estoque insuficiente!");
+        return;
     }
+
+    item.produto.atualizarEstoque(item.quantidade);
+    itens.inserir(item);
+    calcularTotal();
+}
 
     public void calcularTotal() {
         double soma = 0;
@@ -27,6 +36,10 @@ class Pedido {
         }
 
         total = soma;
+    }
+
+    public void finalizarPedido() {
+        this.status = "FINALIZADO";
     }
 
     public void exibirResumo() {

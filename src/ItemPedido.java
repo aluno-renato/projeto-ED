@@ -1,4 +1,4 @@
-class ItemPedido {
+public class ItemPedido {
     Produto produto;
     int quantidade;
     double subtotal;
@@ -9,7 +9,7 @@ class ItemPedido {
         calcularSubtotal();
     }
 
-    public final void calcularSubtotal() {
+    public void calcularSubtotal() {
         subtotal = produto.preco * quantidade;
     }
 

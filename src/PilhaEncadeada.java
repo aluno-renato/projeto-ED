@@ -1,4 +1,4 @@
-class PilhaEncadeada<T> {
+public class PilhaEncadeada<T> {
     private No<T> topo;
 
     public void push(T dado) {

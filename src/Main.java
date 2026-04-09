@@ -18,15 +18,18 @@ public class Main {
                 System.out.println("4 - Listar Produtos");
                 System.out.println("5 - Criar Pedido");
                 System.out.println("6 - Adicionar Item ao Pedido");
-                System.out.println("7 - Ver Fila");
-                System.out.println("8 - Preparar Pedido");
-                System.out.println("9 - Finalizar Pedido");
-                System.out.println("10 - Histórico");
+                System.out.println("7 - Enviar Pedido para Fila");
+                System.out.println("8 - Ver Fila");
+                System.out.println("9 - Preparar Pedido");
+                System.out.println("10 - Finalizar Pedido");
+                System.out.println("11 - Histórico");
+                System.out.println("12 - Navegar Pedidos Ativos");
                 System.out.println("0 - Sair");
 
                 op = Integer.parseInt(sc.nextLine());
 
                 switch (op) {
+
                     case 1 -> {
                         System.out.print("Nome: ");
                         String nome = sc.nextLine();
@@ -37,13 +40,16 @@ public class Main {
                         System.out.print("Endereço: ");
                         String end = sc.nextLine();
 
-                        sistema.cadastrarCliente(new Cliente(id++, nome, tel, end));
+                        Cliente c = new Cliente(id++, nome, tel, end);
+                        c.cadastrar();
+                        sistema.cadastrarCliente(c);
                     }
+
                     case 2 -> {
-                        System.out.println("\n========== LISTA DE CLIENTES ==========");
+                        System.out.println("\n========== CLIENTES ==========");
                         sistema.listarClientes();
-                    break;
                     }
+
                     case 3 -> {
                         System.out.print("Nome produto: ");
                         String np = sc.nextLine();
@@ -57,65 +63,103 @@ public class Main {
                         System.out.print("Estoque: ");
                         int est = Integer.parseInt(sc.nextLine());
 
-                        sistema.cadastrarProduto(new Produto(id++, np, pr, cat, est));
+                        Produto p = new Produto(id++, np, pr, cat, est);
+                        sistema.cadastrarProduto(p);
                     }
+
                     case 4 -> {
-                        System.out.println("\n========== LISTA DE PRODUTOS ==========");
+                        System.out.println("\n========== PRODUTOS ==========");
                         sistema.listarProdutos();
-                        break;
                     }
+
                     case 5 -> {
                         sistema.listarClientes();
                         System.out.print("ID Cliente: ");
                         int idc = Integer.parseInt(sc.nextLine());
 
                         Cliente c = sistema.buscarCliente(idc);
+
                         if (c != null) {
-                            sistema.criarPedido(new Pedido(id++, c));
-                            System.out.println("Pedido criado!");
+                            Pedido pedido = new Pedido(id++, c);
+                            sistema.criarPedido(pedido);
+                            System.out.println("Pedido criado (em edição)!");
+                        } else {
+                            System.out.println("Cliente não encontrado!");
                         }
                     }
+
                     case 6 -> {
+                        System.out.print("ID do Pedido: ");
+                        int idPedido = Integer.parseInt(sc.nextLine());
+
+                        Pedido pedido = sistema.buscarPedidoAtivo(idPedido);
+
+                        if (pedido == null) {
+                            System.out.println("Pedido não encontrado!");
+                            break;
+                        }
+
                         sistema.listarProdutos();
-                        
                         System.out.print("ID Produto: ");
                         int idp = Integer.parseInt(sc.nextLine());
-                        
+
                         Produto prod = sistema.buscarProduto(idp);
-                        
+
                         if (prod == null) {
                             System.out.println("Produto não encontrado!");
                             break;
                         }
+
                         System.out.print("Quantidade: ");
                         int qtd = Integer.parseInt(sc.nextLine());
-                        
-                        Pedido pedido = sistema.prepararProximoPedido();
-                        
-                        if (pedido == null) {
-                            System.out.println("Nenhum pedido disponível!");
-                            break;
-                        }
+
                         pedido.adicionarItem(new ItemPedido(prod, qtd));
-                        sistema.criarPedido(pedido);
-                        
-                        System.out.println("Item adicionado ao pedido!");
-                        break;
+                        System.out.println("Item adicionado!");
                     }
-                    
-                    case 7 -> sistema.mostrarFila();
-                    case 8 -> {
-                        Pedido p = sistema.prepararProximoPedido();
-                        if (p != null) p.exibirResumo();
-                    }
-                    case 9 -> {
-                        Pedido f = sistema.prepararProximoPedido();
-                        if (f != null) {
-                            sistema.finalizarPedido(f);
-                            System.out.println("Finalizado!");
+
+                    case 7 -> {
+                        System.out.print("ID do Pedido: ");
+                        int idPedido = Integer.parseInt(sc.nextLine());
+
+                        Pedido pedido = sistema.buscarPedidoAtivo(idPedido);
+
+                        if (pedido != null) {
+                            sistema.enfileirarPedido(pedido);
+                            System.out.println("Pedido enviado para fila!");
+                        } else {
+                            System.out.println("Pedido não encontrado!");
                         }
                     }
-                    case 10 -> sistema.mostrarHistorico();
+
+                    case 8 -> {
+                        System.out.println("\n========== FILA ==========");
+                        sistema.mostrarFila();
+                    }
+
+                    case 9 -> {
+                        Pedido p = sistema.prepararProximoPedido();
+                        if (p != null) {
+                            System.out.println("Preparando:");
+                            p.exibirResumo();
+                        } else {
+                            System.out.println("Fila vazia!");
+                        }
+                    }
+
+                    case 10 -> {
+                        sistema.finalizarPedido();
+                        System.out.println("Pedido finalizado!");
+                    }
+
+                    case 11 -> {
+                        System.out.println("\n========== HISTÓRICO ==========");
+                        sistema.exibirHistorico();
+                    }
+
+                    case 12 -> {
+                        System.out.println("\n========== PEDIDOS ATIVOS ==========");
+                        sistema.navegarPedidosAtivos();
+                    }
                 }
 
             } while (op != 0);

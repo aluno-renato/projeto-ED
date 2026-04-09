@@ -1,4 +1,4 @@
-class FilaEncadeada<T> {
+public class FilaEncadeada<T> {
     private No<T> inicio, fim;
 
     public void enfileirar(T dado) {
@@ -21,10 +21,6 @@ class FilaEncadeada<T> {
         if (inicio == null) fim = null;
 
         return dado;
-    }
-
-    public boolean estaVazia() {
-        return inicio == null;
     }
 
     public void listar() {

@@ -1,4 +1,4 @@
-class Produto {
+public class Produto {
     int id;
     String nome, categoria;
     double preco;
@@ -14,10 +14,6 @@ class Produto {
 
     public void atualizarEstoque(int qtd) {
         estoque -= qtd;
-    }
-
-    public String getCategoria() {
-        return categoria;
     }
 
     @Override
